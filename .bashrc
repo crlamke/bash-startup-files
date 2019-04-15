@@ -1,14 +1,43 @@
 # .bashrc
 #set -x
 
+# Set path to optional config files that add functionality 
+# to this script.
+cfgPath="/home/chris/dev/bash/bash-startup-files/"
+
+# Set version of this set of startup files
+bashrcVersion=0.74
+
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
   . /etc/bashrc
 fi
 
-# Set path to optional config files that add functionality 
-# to this script.
-cfgPath="/home/chris/dev/bash/bash-scripts/"
+# Check whether there's a new version of .bashrc available
+if [ -f ${cfgPath}/bashrc-version.cfg ]; then
+  IFS='.' read majorVersion minorVersion  < ${cfgPath}/bashrc-version.cfg
+  IFS='.' read thisMajorVersion thisMinorVersion <<< "$bashrcVersion"
+  newVersionAvailable=0
+  if [ "$majorVersion" -gt "$thisMajorVersion" ]; then
+    newVersionAvailable=1
+  else
+    if [ "$minorVersion" -gt "$thisMinorVersion" ]; then
+      newVersionAvailable=1
+    fi
+  fi
+  echo "newVersionAvailable = $newVersionAvailable"
+else
+  echo "bashrc version file not found. Unable to check for new version."
+fi
+
+# If there's a new version of .bashrc available, 
+# then tell the user and create an update script.
+if [ $newVersionAvailable -eq 1 ]; then
+  echo "There's a new version of .bashrc available. To update, run update-bashrc.sh"
+  printf "%s\n%s" '#!/bin/bash' "mv ./.bashrc ./.bashrc.bak; cp ${cfgPath}/.bashrc ." > ./update-bashrc.sh
+  chmod +x ./update-bashrc.sh
+fi
 
 # Set up aliases
 # Source alias file if it exists. If not, just set a few default aliases
