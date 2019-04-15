@@ -6,7 +6,7 @@
 cfgPath="/home/chris/dev/bash/bash-startup-files/"
 
 # Set version of this set of startup files
-bashrcVersion=0.74
+bashrcVersion=0.75
 
 
 # Source global definitions
