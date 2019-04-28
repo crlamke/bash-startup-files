@@ -26,7 +26,6 @@ if [ -f ${cfgPath}/bashrc-version.cfg ]; then
       newVersionAvailable=1
     fi
   fi
-  echo "newVersionAvailable = $newVersionAvailable"
 else
   echo "bashrc version file not found. Unable to check for new version."
 fi
